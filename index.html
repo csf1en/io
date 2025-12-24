@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>neuviii Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* RESET & BASIC SETUP */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 70%);
+        }
+
+        /* MAIN CONTAINER */
+        .profile-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* PROFILE PICTURE AREA */
+        .pfp-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+
+        .pfp-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: contain;
+            background-color: #000;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* GLOW EFFECT */
+        .pfp-glow {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid rgba(100, 149, 237, 0.3);
+            box-shadow: 0 0 20px rgba(65, 105, 225, 0.6), inset 0 0 10px rgba(65, 105, 225, 0.4);
+            animation: pulse-glow 2s infinite alternate;
+            z-index: 1;
+        }
+
+        .pfp-glow::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background: radial-gradient(circle, transparent 50%, rgba(88, 101, 242, 0.2) 70%);
+            border-radius: 50%;
+            animation: spin 8s linear infinite;
+        }
+
+        /* TEXT ELEMENTS */
+        .username {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .tagline {
+            font-size: 15px;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        .location {
+            font-size: 14px;
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 25px;
+        }
+
+        .location i {
+            font-size: 12px;
+        }
+
+        /* DISCORD STATUS CARD */
+        .discord-card {
+            width: 100%;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .discord-pfp {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-image: url("insta.jpeg");
+            background-size: cover;
+            position: relative;
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background-color: #23a559;
+            border: 3px solid #1a1a1a;
+            border-radius: 50%;
+        }
+
+        .discord-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .discord-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .discord-username {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* BADGES */
+        .badges {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .badge-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .badge-img {
+            width: 15px;
+            height: 15px;
+            object-fit: contain;
+            filter: brightness(0) invert(1); 
+            transition: transform 0.2s;
+        }
+
+        .badge-wrapper:hover .badge-img {
+            transform: scale(1.1);
+        }
+
+        /* Tooltips */
+        .badge-wrapper::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transition: 0.2s ease-in-out;
+            pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .badge-wrapper:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .last-seen {
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* SOCIAL ICONS (ALIGNMENT FIXED) */
+        .socials {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* Equal spacing */
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .social-icon {
+            /* This ensures all icons (font or SVG) take up the EXACT same space */
+            width: 30px; 
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 24px;
+            color: #888; /* Grey by default */
+            transition: 0.3s;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
+            text-decoration: none;
+        }
+
+        /* Special coloring for the SVG icon to match */
+        .social-icon svg {
+            fill: #888; /* Grey by default */
+            width: 22px; /* Matches the visual size of font icons */
+            height: 22px;
+            transition: 0.3s;
+        }
+
+        /* Hover Effects */
+        .social-icon:hover {
+            color: #fff;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+        }
+
+        .social-icon:hover svg {
+            fill: #fff; /* White on hover */
+        }
+
+        /* VIEW COUNTER */
+        .views {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); border-color: rgba(88, 101, 242, 0.3); }
+            100% { box-shadow: 0 0 25px rgba(88, 101, 242, 0.8); border-color: rgba(88, 101, 242, 0.6); }
+        }
+
+        @media (max-width: 480px) {
+            .profile-container {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+
+        <div class="pfp-wrapper">
+            <div class="pfp-glow"></div>
+            <img src="pic.jpeg" class="pfp-image" alt="Profile">
+        </div>
+
+        <h1 class="username">csf1enn</h1>
+        <p class="tagline">17 yo geek in progress</p>
+
+        <div class="location">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Delhi</span>
+        </div>
+
+        <div class="discord-card">
+            <div class="discord-pfp">
+                <div class="status-dot"></div> 
+            </div>
+
+            <div class="discord-info">
+                <div class="discord-name-row">
+                    <span class="discord-username">Sanchitt !!</span>
+                    <div class="badges">
+
+                        <div class="badge-wrapper" data-tooltip="SpidyGuy 🕸️">
+                            <img src="https://cdn-icons-png.flaticon.com/512/17921/17921889.png" class="badge-img" alt="Spider">
+                        </div>
+
+                        <div class="badge-wrapper" data-tooltip="StarBoy ⚡️">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4672/4672514.png" class="badge-img" alt="Star">
+                        </div>
+
+                    </div>
+                </div>
+                <span class="last-seen">orega egoista -</span>
+            </div>
+        </div>
+
+        <div class="socials">
+            <a href="https://discord.com/users/CSF1EN" target="_blank" class="social-icon">
+                <i class="fa-brands fa-discord"></i>
+            </a>
+            <a href="https://instagram.com/CSF1EN" target="_blank" class="social-icon">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="https://x.com/CSF1EN" target="_blank" class="social-icon">
+                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+                </svg>
+            </a>
+
+            <a href="https://open.spotify.com/user/CSF1EN" target="_blank" class="social-icon">
+                <i class="fa-brands fa-spotify"></i>
+            </a>
+            <a href="https://github.com/CSF1EN" target="_blank" class="social-icon">
+                <i class="fa-brands fa-github"></i>
+            </a>
+        </div>
+
+        <div class="views">
+            <i class="fa-regular fa-eye"></i>
+            <span>967</span>
+        </div>
+    </div>
+
+</body>
+</html>
